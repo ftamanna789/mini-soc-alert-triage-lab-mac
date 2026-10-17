@@ -93,3 +93,33 @@ The vulnerability count decreased from 257 total findings to 200 total findings 
 - Remediation validation
 - SOC documentation
 - Technical troubleshooting
+
+
+## Troubleshooting log — 17 October 2026 (unresolved)
+
+During a later attempt to access the local Wazuh dashboard/API, the Wazuh Manager service reported **`failed`**. This is a subsequent operational issue, not a reversal of the earlier vulnerability-remediation results above.
+
+### Evidence observed
+
+- OrbStack Linux VM memory: 7.8 GiB total, approximately 5.5 GiB available; swap 8.8 GiB total, 0 B used.
+- VM root disk: 220 G total, 25 G used, 195 G available (12% used).
+- `systemctl is-active wazuh-manager` returned `failed`.
+- Systemd initially reported `TimeoutStartUSec=45s`. A local override was applied to set `TimeoutStartSec=180s`, followed by `systemctl daemon-reload`; restarting the Manager did **not** resolve the failure.
+- The status screenshot shows `ExecStart=/usr/bin/env /var/ossec/bin/wazuh-control start` exiting with status 1, including: `ERROR: Another instance is locking this process.` The referenced lock path was `/var/ossec/var/start-script-lock`.
+- The lock directory contained a `pid` file with PID `259`. The check `ps -p 259` returned no matching process; a separate `ps -ef | grep '[w]azuh-control'` check also showed none.
+- The old lock directory was moved aside to `/var/ossec/var/start-script-lock.stale-259` on the first attempt (no error reported). A repeated move showed `No such file or directory` at the original path.
+- **After the lock move, Manager status still returned `failed`.** The root cause remains unconfirmed. An updated `journalctl` log after the move had been requested but was not yet provided.
+- The repeating `OrbStack update available` notice is informational and was not established as the cause.
+
+### Next diagnostic step
+
+Collect current service logs without changing the system:
+
+```bash
+orb -m wazuh sudo journalctl -u wazuh-manager -n 50 --no-pager -l
+```
+
+Review these alongside `/var/ossec/logs/ossec.log` before any further restart or filesystem changes.
+
+> **Status:** Investigation in progress. Do not describe Wazuh Manager or API connectivity as restored until independently verified. Historical security findings and vulnerability counts in this README remain from earlier lab runs.
+
