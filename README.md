@@ -95,6 +95,25 @@ The vulnerability count decreased from 257 total findings to 200 total findings 
 - Technical troubleshooting
 
 
+## Earlier dashboard evidence recovered from May 2026 conversations
+
+The earlier discussion of screenshots, dated **6 May 2026**, recorded these **historical** Wazuh dashboard readings, well before the October service troubleshooting:
+
+| View / metric | Earlier reported reading |
+|---|---:|
+| Threat Hunting — total events | 43,799 |
+| Threat Hunting — level 12+ alerts | 0 |
+| Threat Hunting — authentication failures | 1 |
+| Threat Hunting — authentication successes | 3 |
+| Endpoint overview — active agents | 1 |
+| Earlier alert overview — medium alerts | 43,599 |
+
+The readings above came from **different dashboard views/screenshot moments** and should not be added together or assumed to represent one common reporting window. An earlier screenshot also showed **no agents registered**; a subsequent endpoint screenshot recorded **one active agent**, consistent with progress during lab setup.
+
+The endpoint screenshot identified macOS **15.7.4**, Apple **M3**, **16 GB** memory and Wazuh Agent **4.14.5**. Vulnerability and SCA counts from the same earlier work are preserved in the tables above. These are **historical pre-restart outcomes**, not claims about the October Manager's current health.
+
+**Unverified later-recalled values:** “661 thousand”, “25”, and “118” were mentioned verbally in October, but their exact dashboard labels and reporting periods were not recovered. They are not represented as confirmed counts here.
+
 ## Lab state before the October 2026 restart attempts
 
 **Historical functioning lab (user-reported):** Before the later restart/troubleshooting sequence, the Wazuh lab had been used for dashboard monitoring, endpoint telemetry, threat-hunting review, vulnerability detection and security configuration assessment. The completed investigation and remediation results reported above belong to that earlier working period, **not** to a subsequently failed service state.
