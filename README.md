@@ -114,6 +114,36 @@ The endpoint screenshot identified macOS **15.7.4**, Apple **M3**, **16 GB** mem
 
 **Unverified later-recalled values:** “661 thousand”, “25”, and “118” were mentioned verbally in October, but their exact dashboard labels and reporting periods were not recovered. They are not represented as confirmed counts here.
 
+## 17 October 2026 — pre-restart threat-hunting screenshots (12:20–12:27 BST)
+
+The following findings are **transcribed from six Wazuh Threat Hunting screenshots captured between 12:20 and 12:27 BST**, before the subsequent Manager service troubleshooting. They demonstrate that the dashboard could query and display indexed alert documents at that time; they **do not independently prove a healthy Manager process or live agent–Manager connection** at the time of capture.
+
+### Search and filtered results
+
+- Threat Hunting → Events, query `rule.id: 510` (rootcheck host-based anomaly detection), manager `wazuh`, **Last 24 hours**: **26,711 hits** in the first screenshot. Visible document timestamps include 17 October 2026 around 11:43.
+- The query included an exclusion of `/dev/.lxc/proc/*`-related data.file paths. Later screenshots showed another exclusion for `/dev/.lxc/sys/*` and a much smaller result set (the label is partially obscured by the details drawer and should not be treated as a verified exact total).
+- The document details list includes manager-side agent `000` (`wazuh`) and macOS endpoint agent `001`. The macOS endpoint name/IP have been intentionally omitted from this public write-up.
+- Rule `510`, severity level **7**, description **“Host-based anomaly detection event (rootcheck).”** The results represent rule matches, not confirmed incidents.
+
+### Triage examples from the screenshots
+
+| Observed finding | Source / Wazuh details | Analyst interpretation / next verification |
+|---|---|---|
+| Possible hidden file flagged in a `/dev/.lxc/sys/module/...` path | Manager agent `000`, rootcheck, rule 510, level 7 | Likely merits review as a container-/VM-specific filesystem artifact. Validate file path, container environment and rootcheck signature before raising as a security incident. |
+| File `/dev/.lxc-boot-id` flagged as possible hidden file | Manager agent `000`, rootcheck, rule 510, level 7 | Check OrbStack/LXC environment and file provenance; the alert alone does not demonstrate malicious concealment. |
+| TCP port **55555** flagged as hidden | macOS agent `001`, rootcheck, rule 510, level 7; message suggests a kernel-level rootkit or trojaned netstat as possibilities | **Unverified detection, not a confirmed rootkit.** Verify listening process and port state using trusted system tools, and check whether the environment/tool discrepancy can explain the warning. |
+| Log file in `/var/log/Pulse Secure/Logging/` reportedly owned by root and writable by anyone | macOS agent `001`, rootcheck, rule 510, level 7 | Independently verify file mode, ownership and whether the file still exists. If confirmed, review permissions and remediate according to application requirements. |
+
+The `rule.firedtimes` field visible in individual documents contained values such as 8,854, 2, 22,570, 1 and 22,569. **These are rule firing counters attached to event records; do not describe them as distinct confirmed alerts, incidents, or vulnerabilities.**
+
+### SOC analyst actions and limits
+
+1. Applied a rule-ID filter and inspected time-scoped matching events.
+2. Opened individual alert documents and interpreted `agent.id`, `decoder.name`, `data.file`, `data.title`, `rule.level` and `rule.firedtimes`.
+3. Compared manager-side LXC-related paths with macOS endpoint rootcheck findings, avoiding premature escalation of potentially environment-specific detections.
+4. Identified follow-up validation for the hidden-port and writable-log-file findings. **Remediation and incident confirmation are not evidenced by these screenshots.**
+5. Kept these historical dashboard findings separate from the later Wazuh Manager startup failure.
+
 ## Lab state before the October 2026 restart attempts
 
 **Historical functioning lab (user-reported):** Before the later restart/troubleshooting sequence, the Wazuh lab had been used for dashboard monitoring, endpoint telemetry, threat-hunting review, vulnerability detection and security configuration assessment. The completed investigation and remediation results reported above belong to that earlier working period, **not** to a subsequently failed service state.
