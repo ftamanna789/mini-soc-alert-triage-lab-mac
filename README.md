@@ -95,9 +95,19 @@ The vulnerability count decreased from 257 total findings to 200 total findings 
 - Technical troubleshooting
 
 
+## Lab state before the October 2026 restart attempts
+
+**Historical functioning lab (user-reported):** Before the later restart/troubleshooting sequence, the Wazuh lab had been used for dashboard monitoring, endpoint telemetry, threat-hunting review, vulnerability detection and security configuration assessment. The completed investigation and remediation results reported above belong to that earlier working period, **not** to a subsequently failed service state.
+
+The user reports that Wazuh Manager was functioning before the restart attempts. There is no pre-restart `systemctl is-active` output in the evidence reviewed here to independently timestamp or validate that service state. In the troubleshooting transcript, `failed` was already observed at an early diagnostic check, *before the later explicitly recorded restart command*. Thus the evidence does **not** establish that the restart caused the failure.
+
+The user also recalled historical alert figures described verbally as “661 thousand”, “25”, and “118”; their exact values, labels, time windows and meanings are **not yet verified**, and must not be reported as confirmed alert metrics. The screenshot available in this session shows **failed-service logs from 17 October**, not those earlier dashboard alert counts.
+
+The following section records the **later operational troubleshooting**, separately from the historical SOC analysis.
+
 ## Troubleshooting log — 17 October 2026 (unresolved)
 
-During a later attempt to access the local Wazuh dashboard/API, the Wazuh Manager service reported **`failed`**. This is a subsequent operational issue, not a reversal of the earlier vulnerability-remediation results above.
+During later diagnostics of the local Wazuh dashboard/API, the Wazuh Manager service reported **`failed`**. The user says the lab had been working before the restart attempts; however, an early status check already returned `failed` before the explicitly documented restart. This is a subsequent operational issue, not a reversal of the earlier vulnerability-remediation results above.
 
 ### Evidence observed
 
