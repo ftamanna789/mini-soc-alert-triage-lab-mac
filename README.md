@@ -136,6 +136,8 @@ The following findings are **transcribed from six Wazuh Threat Hunting screensho
 
 The `rule.firedtimes` field visible in individual documents contained values such as 8,854, 2, 22,570, 1 and 22,569. **These are rule firing counters attached to event records; do not describe them as distinct confirmed alerts, incidents, or vulnerabilities.**
 
+**Hidden dot-file detection (rootcheck):** During Threat Hunting I caught/investigated a possible hidden dot-file alert: `/dev/.lxc-boot-id` (Wazuh rule 510, level 7, manager-side agent `000`). The screenshot recorded **“File present on /dev. Possible hidden file.”** I treated this as a detection requiring verification, not evidence of a confirmed compromise. The `/dev/.lxc-*` filename indicates a likely link to the local LXC/OrbStack environment, which should be checked before escalating.
+
 ### SOC analyst actions and limits
 
 1. Applied a rule-ID filter and inspected time-scoped matching events.
