@@ -182,5 +182,5 @@ orb -m wazuh sudo journalctl -u wazuh-manager -n 50 --no-pager -l
 
 Review these alongside `/var/ossec/logs/ossec.log` before any further restart or filesystem changes.
 
-> **Status:** Investigation in progress. Do not describe Wazuh Manager or API connectivity as restored until independently verified. Historical security findings and vulnerability counts in this README remain from earlier lab runs.
+Historical security findings and vulnerability counts in this README remain from earlier lab runs. The subsequent Manager/API connection issue has not been verified as resolved.
 
