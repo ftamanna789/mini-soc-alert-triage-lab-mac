@@ -1,0 +1,10 @@
+<!-- LAB ONLY: Deploy on Wazuh manager, not macOS agent. -->
+<group name="syscheck,local_fim_lab,">
+  <rule id="100550" level="10">
+    <if_sid>550</if_sid>
+    <field name="file" type="pcre2">soc-fim-lab/test-alert\.txt$</field>
+    <description>LAB: Monitored SOC test file integrity changed</description>
+    <mitre><id>T1565.001</id></mitre>
+    <group>fim_lab_file_modified,</group>
+  </rule>
+</group>
